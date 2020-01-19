@@ -60,14 +60,14 @@ void graph::print(void) {
 	for(int i = 0; i < gSize; i++) {
 		for(int j = 0; j < gSize; j++) {
 			// print one row of the matrix
-			cout << "\t" << g[i][j] << "\t";
+			cout << " " << g[i][j] << " ";
 		} // for inner (j)
 		cout << endl; // linebreak after row is printed
 	} // for outer (i)
 
 }
 
-void graph::generate(double density) {
+void graph::generate(double density, unsigned int distanceMin, unsigned int distanceMax) {
 
 	for(int i = 0; i < gSize; i++) {
 		for(int j = 0; j < gSize; j++) {
@@ -83,7 +83,7 @@ void graph::generate(double density) {
 				// to readability this way
 				if( prob() < density ) {
 					// generate a random weight here
-					g[i][j] = g[j][i] = (rand() % g_MAXIMAL_WEIGHT) + 1;
+					g[i][j] = g[j][i] = (rand() % distanceMax) + distanceMin;
 				} else {
 					// no edge connecting nodes i and j
 					g[i][j] = g[j][i] = 0;

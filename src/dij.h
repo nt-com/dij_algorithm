@@ -85,12 +85,23 @@ class dijkstraType {
 		/// @brief prints the shortest path between a source and a destination node
 		/// @param source the source node
 		/// @param destination the destination node
-		void getShortestPath(unsigned int source, unsigned int destination);
+		/// @return the distance value from the source to the destination node
+		unsigned int getShortestPath(unsigned int source, unsigned int destination);
 
 		/// @brief prints the internal data of this class after dijkstra's algorithm is finished
 		/// mainly for debugging and traceability
 		/// @return void
 		void printData(void);
+	
+		/// @brief initializes the internal data members for dijkstra's algorithm
+		/// @return void
+		void init(void);
+
+		/// @brief Dijkstra's Algorithm 
+		/// @param g the graph to operate on
+		/// @param source the source node from which shortest paths are determined
+		/// @return void
+		void dijkstra(graph& g, unsigned int source);
 
 };
 

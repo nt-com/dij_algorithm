@@ -55,7 +55,7 @@ class graph {
 		/// @brief generates a random graph
 		/// @param density the density value to use for generating the graph
 		/// @return void
-		void generate(double density);
+		void generate(double density, unsigned int distanceMin, unsigned int distanceMax);
 
 		/// @brief accessor method, returns the size (number of nodes) of the graph
 		/// @return the number of nodes in the graph

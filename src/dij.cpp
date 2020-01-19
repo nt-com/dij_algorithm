@@ -89,7 +89,7 @@ unsigned int dijkstraType::getDistance(unsigned int node) {
 	return distance[node];
 }
 
-void dijkstraType::getShortestPath(unsigned int source, unsigned int destination) {
+unsigned int dijkstraType::getShortestPath(unsigned int source, unsigned int destination) {
 
 	unsigned int currentNode = destination;
 	unsigned int path[dSize] = { 0x00 };
@@ -97,7 +97,7 @@ void dijkstraType::getShortestPath(unsigned int source, unsigned int destination
 		
 		if(source == destination) {
 			cout << "source == destination" << endl;
-			return;
+			return 0;
 		} 
 
 		// if the distance to the destination node is not infinite
@@ -114,7 +114,7 @@ void dijkstraType::getShortestPath(unsigned int source, unsigned int destination
 		} else {
 			// when the destination node can't be reached from the source
 			cout << "no path from " << source << " to " << destination << endl;
-			return;
+			return 0;	// not reachable
 		}
 
 	// if a path was found print it 
@@ -126,6 +126,8 @@ void dijkstraType::getShortestPath(unsigned int source, unsigned int destination
 		cout << path[i] << " -> ";
 	}
 	cout << "[" << source << "]" << " | distance: " << distance[destination] << endl;
+
+	return distance[destination];
 
 }
 
@@ -144,3 +146,86 @@ void dijkstraType::printData(void) {
 	} // for outer (j)
 
 }
+
+void dijkstraType::init(void) {
+
+	for(int i = 0; i < dSize; i++) {
+		// there are no defined predecessor values yet,
+		// so set them to the undefined placeholder
+		predecessor[i] = g_UNDEFINED;
+		// the distance to all nodes is infinity at 
+		// initialization, so set to the placeholder value
+		distance[i] = g_INFINITY;
+		// no node has been visited yet, so visited is false for
+		// all nodes...
+		visited[i] = false;
+	}
+
+}
+
+void dijkstraType::dijkstra(graph& g, unsigned int source) {
+
+	// used to store current node
+	unsigned int u = g_UNDEFINED;
+	// used to store alternative, possibly shorter paths
+	unsigned int alternativePath = g_UNDEFINED;
+	// temporary value to hold distance to an adjacent node
+	unsigned int distanceNeighbor = g_INFINITY;
+	// the list to store nodes in for processing of graph
+	list<unsigned int> *q = new list<unsigned int>(0);
+
+	// initializes the internal data members for dijkstra's algorithm
+	init();
+
+	// source is automatically visited, because we start here.
+	setDistance(source, 0);
+
+	// initialize the list
+	for(int i = 0; i < g.getSize(); i++) {
+		q->push_back(i);
+	}
+
+	// start dijkstra's algorithm	
+	while( !q->empty() ) {
+
+		// get the node stored in the list with the minimal distance
+		u = getMinDistance();		
+		// set the current node to visited 
+		setVisited(u);	
+		// remove the node from the list
+		q->remove(u);
+		
+		// check what nodes are reachable from the current node
+		list<unsigned int>::iterator it;
+		for(it = q->begin(); it != q->end(); ++it) {
+			// get the current node from the iterator (is the value of the iterator, hence dereference)
+			unsigned int v = *it;
+	
+			// if a vertex can be reached from u, update the distance
+			distanceNeighbor = g.getWeight(u,v);
+	
+			// if there is an edge to the neighbar
+			// if the neighbor was not visited yet
+			// if the distance from the source to the neighbor is not infinite (the neighbor can be
+			// reached from the source)
+			// update the distance value to the neighbor and set the predecessor for the neighbor
+			if( distanceNeighbor != g_NOT_REACHABLE && !getVisited(v) && getDistance(u) != g_INFINITY) {
+				// calculate the new path to the neighbor
+				alternativePath = getDistance(u) + distanceNeighbor;
+				// if the new path is shorter than the stored path, set the new values
+				if( alternativePath < getDistance(v) ) {
+					// set the newly calculated distance value for the node v
+					setDistance(v, alternativePath);
+					// set node v's predecessor
+					setPredecessor(v,u);
+				}
+			} // if distanceNeighbor
+		} // for iterator 	
+			
+	} // while
+	
+	// delete the list, as it is not needed anymore
+	delete q;	
+
+}
+

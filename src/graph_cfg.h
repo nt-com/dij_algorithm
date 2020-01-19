@@ -16,11 +16,13 @@
 ////////////////////////////////////////////////////
 
 /// @brief maximal weight an edge can have
-const unsigned int 	g_MAXIMAL_WEIGHT = 12;
+const unsigned int 	g_MAXIMAL_WEIGHT = 30;
+/// @brief minimal weight an edge can have
+const unsigned int	g_MINIMAL_WEIGHT = 1;
 /// @brief the graph density
-const double 		g_DENSITY = 0.25;
+const double 		g_DENSITY = 0.80;
 /// @brief the number of nodes in the graph (for graph generation)
-const unsigned int 	g_GRAPH_SIZE = 5;
+const unsigned int 	g_GRAPH_SIZE = 10;
 
 ////////////////////////////////////////////////////
 // EOF
